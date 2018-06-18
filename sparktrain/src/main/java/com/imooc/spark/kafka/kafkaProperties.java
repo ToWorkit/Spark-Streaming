@@ -9,4 +9,7 @@ public class kafkaProperties {
     public static final String TOPIC = "test";
 
     public static final String BROKER_LIST = "192.168.187.116:9092";
+
+    public static final String GROUP_ID = "test_group1";
 }
+
