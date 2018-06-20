@@ -1,26 +1,23 @@
 package com.imooc.spark
 
+
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 /**
-  * Spark Streaming处理Socket数据
-  *
-  * 测试 nc -lp 6789
+  * 使用Spark Streaming处理文件系统(local/hdfs)的数据
   */
-object NetworkWordCount {
+object FileWordCount {
   def main(args: Array[String]): Unit = {
-    val sparkConf = new SparkConf().setAppName("NetworkWordCount").setMaster("local[2]")
-    /**
-      * 创建StreamingContext需要两个参数 SparkConf和batch interval
-      */
+    //设置Hadoop的环境变量
+    System.setProperty("hadoop.home.dir", "D:\\hadoop-2.7.3\\hadoop-2.7.3")
+    val sparkConf = new SparkConf().setAppName("FileWordCount").setMaster("local[2]")
     val sc = new StreamingContext(sparkConf, Seconds(5))
 
-    // nc -lp 6789
-    val lines = sc.socketTextStream("192.168.187.116", 6789)
+    val lines = sc.textFileStream("C:\\Users\\Just Do It\\Desktop\\data\\imooc_spark_streaming\\data\\")
+
     // 处理数据
     val result = lines.flatMap(_.split(" ")).map((_, 1)).reduceByKey(_ + _)
-
     result.print()
 
     sc.start()
