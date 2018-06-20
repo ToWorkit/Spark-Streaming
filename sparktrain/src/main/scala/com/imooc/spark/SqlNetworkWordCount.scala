@@ -11,7 +11,7 @@ import org.apache.spark.streaming.{Seconds, StreamingContext, Time}
 object SqlNetworkWordCount {
 
   def main(args: Array[String]): Unit = {
-    val sparkConf = new SparkConf().setAppName("ForeachRDDApp").setMaster("local[2]")
+    val sparkConf = new SparkConf().setAppName("SqlNetworkWordCount").setMaster("local[2]")
     val ssc = new StreamingContext(sparkConf, Seconds(5))
 
     val lines = ssc.socketTextStream("192.168.187.116", 6789)
