@@ -23,14 +23,16 @@ def sample_url():
   return random.sample(url_paths, 1)[0]
 
 # 随机ip
-
+def sample_ip():
+  slice_ = random.sample(ip_slices, 4)
+  return ".".join([str(item) for item in slice_])
 
 # 日志生成
 def generate_log(count = 10):
   while count >= 1:
-    query_log = "{url}".format(url = sample_url()) 
+    query_log = "{url}\t{ip}".format(url = sample_url(), ip = sample_ip()) 
     print(query_log)
     count -= 1
 
 if __name__ == '__main__':
-  generate_log()
+  generate_log(1)
