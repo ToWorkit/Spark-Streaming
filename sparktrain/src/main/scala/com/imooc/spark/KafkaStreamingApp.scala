@@ -1,12 +1,10 @@
+/*
 package com.imooc.spark
 
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-//import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.streaming.kafka010._
-import org.apache.spark.streaming.kafka010.LocationStrategies.PreferConsistent
-import org.apache.spark.streaming.kafka010.ConsumerStrategies.Subscribe
+
 
 /**
   * Spark Streaming对接Kafka
@@ -41,3 +39,4 @@ object KafkaStreamingApp {
     sc.awaitTermination()
   }
 }
+*/
