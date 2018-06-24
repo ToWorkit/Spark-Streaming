@@ -7,7 +7,7 @@ import org.apache.commons.lang3.time.FastDateFormat
 /**
   *
   */
-object DataUtils {
+object DateUtils {
   // 2018-06-24 12:11:01 日志格式
   val YYYYMMDDHHMMSS_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss")
   // 输出格式
