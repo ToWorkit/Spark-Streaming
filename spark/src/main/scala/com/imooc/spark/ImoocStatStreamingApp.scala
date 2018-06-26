@@ -3,8 +3,11 @@ package com.imooc.spark
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.kafka.KafkaUtils
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import project.domain.ClickLog
-import project.untils.DateUtils
+import project.dao.CourseClickCountDAO
+import project.domain.{ClickLog, CourseClickCount}
+import project.utils.DateUtils
+
+import scala.collection.mutable.ListBuffer
 
 /**
   * 使用Spark Streaming处理Kafka过来的数据
@@ -40,8 +43,27 @@ object ImoocStatStreamingApp {
       ClickLog(infos(0), DateUtils.parseToMinute(infos(1)), courseId, infos(3).toInt, infos(4))
     }).filter(clicklog => clicklog.courseId != 0)
 
-    cleanData.print()
+    // cleanData.print()
+    // 统计今天到现在为止实战课程的访问量
+    /**
+      * x ==> ClickLog x就是ClickLog
+      */
+    cleanData.map(x => {
+      // HBase rowkey设计: 20181111_01 时间_课程id
+      // WordCount
+      (x.time.substring(0, 8) + "_" + x.courseId, 1)
+    }).reduceByKey(_ + _).foreachRDD(rdd => {
+      // 一个一个的Partition写入效果最佳
+      rdd.foreachPartition(partitionRecords => {
+        val list = new ListBuffer[CourseClickCount]
 
+        partitionRecords.foreach(pair => {
+          list.append(CourseClickCount(pair._1, pair._2))
+        })
+
+        CourseClickCountDAO.save(list)
+      })
+    })
     ssc.start()
     ssc.awaitTermination()
   }
