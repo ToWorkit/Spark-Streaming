@@ -1,5 +1,6 @@
 import math
 
+# 求最大值
 def getMax(arr, l, r):
   if l == r:
     return arr[l]
